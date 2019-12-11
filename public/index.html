@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="stylesheets/styles.css" />
+    <link rel="icon" href="images/pokeball_PNG8.png">
+    <title>Pokemon Team Builder</title>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="images/pokeball_PNG8.png" height="100" width="100">
+        </div>
+        <div class="title">
+            <h1>Pokemon Team Builder</h1>
+        </div>
+    </div>
+    <br>
+    <div id="app" class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h2>Search for a Pokemon</h2>
+                    <div class="form">
+                        <input v-model="pokeName" placeholder="Pokemon Name">
+                        <button @click="addPokemon">Add to team</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <h2>Search for a Team</h2>
+                    <div class="form">
+                    <input v-model="searchName" placeholder="Select a name to load">
+                    <div class="suggestions" v-if="suggestions.length > 0">
+                        <div class="suggestion" v-for="s in suggestions" @click="loadTeam(s)">
+                            {{s.name}}
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div id="teamName" align="center">
+            <h1 font-weight="bold">{{teamName}}</h1>
+        </div>
+        <div class="alert alert-primary alert-dismissible fade show" role="alert" v-show="fullTeam">
+            This team is already full! Remove a Pokemon or start a new team to add more Pokemon.
+            <button type="button" class="close" @click="closeTooManyPoke" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="container">
+            <div class="row ">
+                <div class="col-lg" v-for="poke in currTeam" align="center">
+                    <img :src="poke.sprite"/>
+                    <div class="nametag">{{poke.name}}</div>
+                    <div v-for="type in poke.types">{{type}}</div>
+                    <button @click="removePokemon(poke.name)">Remove</button>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div align="center">
+            <input v-model="teamName" v-if="showSave" placeholder="Enter a name to save">
+        </div>
+        <br>
+        <div align="center">
+            <button v-show="showSaveButton" @click="saveTeam">Save Team</button>
+            <button v-show="showSave" @click="newTeam">New Team</button>
+        </div>
+        <br>
+        <div align="center">
+            <button v-show="showSave" @click="deleteTeam">Delete Team</button>
+        </div>
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js" integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>
+    <script src="/javascripts/script.js"></script>
+    <nav class="navbar fixed-bottom navbar-light bg-light">
+        <a class="navbar-brand" href="https://github.com/vanpattenjeremy/CS260Final">
+            <img src="/images/github_transparent.png" height="40" width="40">
+            GitHub
+        </a>
+    </nav>
+</body>
